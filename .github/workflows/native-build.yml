@@ -1,0 +1,26 @@
+name: native-build
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    name: Run 'spring-native-graal'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        version: [22.3.0] # temporarily locked to 22.3.0 for Spring Boot 3 compatibility
+    steps:
+      - uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: ${{ matrix.version }}
+          java-version: '17'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache: 'maven'
+          native-image-job-reports: 'true'
+      - name: Run 'native-build
+        run: mvn native:compile -Pnative -DskipTests
