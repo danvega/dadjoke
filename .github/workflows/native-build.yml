@@ -24,8 +24,4 @@ jobs:
           native-image-job-reports: 'true'
       - name: Run 'native-build
         run: mvn native:compile -Pnative -DskipTests
-      - name: Move 'native-build' artifact to build directory
-        uses: actions/upload-artifact@v2
-        with:
-          name: native-build
-          path: build
+      # TODO: copy the native image to the /build directory
